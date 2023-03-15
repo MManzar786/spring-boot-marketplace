@@ -1,15 +1,13 @@
 package app.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import app.dto.ProductDto;
-import app.exception.ResourceNotFoundException;
+import app.dto.PaginatedResponse;
 import app.model.Product;
 import app.repository.ProductRepository;
 import app.service.ProductService;
@@ -24,29 +22,12 @@ public class ProductServiceImpl implements ProductService{
         this.productRepository = productsRepository;
     }
 	
-	@Override
-	public ProductDto findById(Long id) {
-	    Product product = this.productRepository
-                .findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
-
-        return new ProductDto(product);
-	}
 
 	@Override
-	public List<ProductDto> findAll() {
-		List<ProductDto> list= this.productRepository
-        .findAll()
-        .stream()
-        .map(product -> new ProductDto(product))
-        .collect(Collectors.toList());
-		return list;
-	}
-
-	@Override
-	public ProductDto save(ProductDto productDto) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<PaginatedResponse<Product>> findAll(Pageable pageable) {
+		Page<Product> products = productRepository.findAll(pageable);
+	    long totalProducts = products.getTotalElements();
+	    return ResponseEntity.ok(PaginatedResponse.of(products.getContent(), totalProducts, pageable));
 	}
 
 }

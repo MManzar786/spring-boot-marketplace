@@ -1,15 +1,11 @@
 package app.service;
 
-import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
-import app.dto.ProductDto;
+import app.dto.PaginatedResponse;
+import app.model.Product;
 
 public interface ProductService {
-	ProductDto findById(Long id);
-
-    List<ProductDto> findAll();
-
-    ProductDto save(ProductDto productDto);
-
-
+	ResponseEntity<PaginatedResponse<Product>> findAll(Pageable pageable);
 }
