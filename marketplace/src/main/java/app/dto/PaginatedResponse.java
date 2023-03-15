@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PaginatedResponse<T> {
-	    private List<T> content;
+	    private List<T> data;
 	    private long totalElements;
 	    private int totalPages;
 	    private int pageNumber;
@@ -18,7 +18,7 @@ public class PaginatedResponse<T> {
 
 	    public static <T> PaginatedResponse<T> of(List<T> content, long totalElements, Pageable pageable) {
 	    	PaginatedResponse<T> response = new PaginatedResponse<>();
-	        response.content = content;
+	        response.data = content;
 	        response.totalElements = totalElements;
 	        response.totalPages = (int) Math.ceil((double) totalElements / pageable.getPageSize());
 	        response.pageNumber = pageable.getPageNumber();
