@@ -18,13 +18,13 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import app.config.JwtService;
 import app.dto.PaginatedResponse;
 import app.model.Category;
 import app.model.Product;
 import app.repository.CategoryRepository;
 import app.repository.ProductRepository;
 import app.repository.UserRepository;
+import app.security.JwtService;
 import app.service.ProductService;
 import lombok.RequiredArgsConstructor;
 

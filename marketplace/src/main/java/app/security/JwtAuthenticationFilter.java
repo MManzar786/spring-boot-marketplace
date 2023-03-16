@@ -1,4 +1,4 @@
-package app.config;
+package app.security;
 
 
 import java.io.IOException;

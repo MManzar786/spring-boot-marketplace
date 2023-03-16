@@ -8,7 +8,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import app.common.exception.CustomException;
-import app.config.JwtService;
 import app.dto.AuthenticationRequest;
 import app.dto.AuthenticationResponse;
 import app.dto.RegisterRequest;
@@ -16,6 +15,7 @@ import app.dto.RegisterResponse;
 import app.enums.ERole;
 import app.model.User;
 import app.repository.UserRepository;
+import app.security.JwtService;
 import app.service.AuthService;
 import lombok.RequiredArgsConstructor;
 

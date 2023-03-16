@@ -1,4 +1,4 @@
-package app.config;
+package app.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
