@@ -65,10 +65,4 @@ public class ProductController {
 		}
 	}
 
-	@PreAuthorize("hasAuthority('ROLE_USER')")
-	@GetMapping("/hello")
-	public ResponseEntity<String> sayHello() {
-		return ResponseEntity.ok("Hello from secured endpoint");
-	}
-
 }
