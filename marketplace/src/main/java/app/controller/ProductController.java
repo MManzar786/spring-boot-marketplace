@@ -42,6 +42,13 @@ public class ProductController {
 		}
 
 	}
+	
+	@GetMapping("category")
+	public ResponseEntity<PaginatedResponse<Product>> getProductsByCategory(
+			@RequestParam(name = "category", required = false) Long category, Pageable pageable) {
+			return this.productService.findProductsByCategory(category, pageable);
+
+	}
 
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping(path = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

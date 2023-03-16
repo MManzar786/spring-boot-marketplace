@@ -1,5 +1,7 @@
 package app.service;
 
-public class CategoryService {
+import app.dto.CategoryResponse;
 
+public interface CategoryService {
+	CategoryResponse findAll();
 }

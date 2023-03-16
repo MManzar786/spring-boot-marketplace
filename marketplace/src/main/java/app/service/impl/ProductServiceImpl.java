@@ -11,29 +11,30 @@ import java.nio.file.StandardCopyOption;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import app.config.JwtService;
 import app.dto.PaginatedResponse;
 import app.model.Category;
 import app.model.Product;
 import app.repository.CategoryRepository;
 import app.repository.ProductRepository;
+import app.repository.UserRepository;
 import app.service.ProductService;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService{
 
-	private ProductRepository productRepository;
-	private CategoryRepository categoryRepository;
+	private final ProductRepository productRepository;
+	private final CategoryRepository categoryRepository;
 	
-    public ProductServiceImpl(
-            ProductRepository productsRepository,CategoryRepository categoryRepository) {
-        this.productRepository = productsRepository;
-        this.categoryRepository = categoryRepository;
-    }
 
 	@Override
 	public ResponseEntity<PaginatedResponse<Product>> findAll(Pageable pageable) {
@@ -85,5 +86,12 @@ public class ProductServiceImpl implements ProductService{
 	        Product savedProduct = productRepository.save(product);
 	        return ResponseEntity.ok(savedProduct);
 	}
+
+	@Override
+	public ResponseEntity<PaginatedResponse<Product>> findProductsByCategory(Long categoryId, Pageable pageable) {
+			Page<Product> products = productRepository.findByCategory(categoryId,pageable);
+		    long totalProducts = products.getTotalElements();
+		    return ResponseEntity.ok(PaginatedResponse.of(products.getContent(), totalProducts, pageable));
+		}
 
 }
