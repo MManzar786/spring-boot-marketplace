@@ -20,28 +20,28 @@ import app.repository.UserRepository;
 public class AppConfig {
 
 	private final UserRepository repository;
-	
-	  @Bean
-	  public UserDetailsService userDetailsService() {
-	    return email -> repository.findByEmail(email)
-	        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-	  }
-	  
-	  @Bean
-	  public AuthenticationProvider authenticationProvider() {
-	    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-	    authProvider.setUserDetailsService(userDetailsService());
-	    authProvider.setPasswordEncoder(passwordEncoder());
-	    return authProvider;
-	  }
 
-	  @Bean
-	  public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-	    return config.getAuthenticationManager();
-	  }
+    @Bean
+    UserDetailsService userDetailsService() {
+        return email -> repository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
 
-	  @Bean
-	  public PasswordEncoder passwordEncoder() {
-	    return new BCryptPasswordEncoder();
-	  }
+    @Bean
+    AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

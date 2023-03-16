@@ -17,7 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import app.dto.PaginatedResponse;
+import app.model.Category;
 import app.model.Product;
+import app.repository.CategoryRepository;
 import app.repository.ProductRepository;
 import app.service.ProductService;
 
@@ -25,10 +27,12 @@ import app.service.ProductService;
 public class ProductServiceImpl implements ProductService{
 
 	private ProductRepository productRepository;
+	private CategoryRepository categoryRepository;
 	
     public ProductServiceImpl(
-            ProductRepository productsRepository) {
+            ProductRepository productsRepository,CategoryRepository categoryRepository) {
         this.productRepository = productsRepository;
+        this.categoryRepository = categoryRepository;
     }
 
 	@Override
@@ -46,7 +50,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public ResponseEntity<Product> addProduct(String title, String description, String category, double price,
+	public ResponseEntity<Product> addProduct(String title, String description, String categoryTitle, double price,
 			MultipartFile image,String uploadDir) {
 		 String filename = StringUtils.cleanPath(image.getOriginalFilename());
 	        Path uploadPath = Paths.get(uploadDir);
@@ -67,16 +71,15 @@ public class ProductServiceImpl implements ProductService{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 	        String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
 	                .path("/images/")
 	                .path(filename)
 	                .toUriString();
-
+		    Category category = this.categoryRepository.findByName(categoryTitle);
 	        Product product = new Product();
 	        product.setName(title);
 	        product.setDescription(description);
-//	        product.setCategory(category);
+	        product.setCategory(category);
 	        product.setPrice(price);
 	        product.setImageUrl(imageUrl);
 	        Product savedProduct = productRepository.save(product);
