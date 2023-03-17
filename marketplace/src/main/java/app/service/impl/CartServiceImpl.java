@@ -1,5 +1,7 @@
 package app.service.impl;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import app.dto.AuthenticationResponse;
 import app.dto.DeleteCartResponse;
 import app.model.Cart;
 import app.model.CartItem;
+import app.model.User;
 import app.repository.CartItemRepository;
 import app.repository.CartRepository;
 import app.repository.UserRepository;
@@ -29,19 +32,29 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public AddCartResponse addCartItem(AddCartRequest request) {
 		try {
-			var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-			var cart = new Cart();
-			cart.setUser(user);
-			var cartAdded = cartRepository.save(cart);
+			User user = userRepository.findById(request.getUserId()).orElseThrow();
+			Cart cart = cartRepository.findByUser(user.getId());
+			if (cart == null) {
+				cart = new Cart();
+				cart.setUser(user);
+				cart = cartRepository.save(cart);
+			}
+			  var cartItemOptional = cartItemRepository.findByCartAndProduct(cart, request.getProductId());
+		        if (cartItemOptional.isPresent()) {
+		            var cartItem = cartItemOptional.get();
+		            cartItem.setQuantity(cartItem.getQuantity() + request.getQuantity());
+		            cartItemRepository.save(cartItem);
+		            return AddCartResponse.builder().cartItem(cartItem).build();
+		        }
 			var cartItem = new CartItem();
 			var product = productRepository.findById(request.getProductId());
-			cartItem.setCart(cartAdded);
+			cartItem.setCart(cart);
 			cartItem.setProduct(product.get());
 			cartItem.setQuantity(request.getQuantity());
 			cartItemRepository.save(cartItem);
 			return AddCartResponse.builder().cartItem(cartItem).build();
 		} catch (Exception e) {
-			throw new CustomException("Invalid items supplied", HttpStatus.CONFLICT);
+			throw new CustomException(e.getMessage(), HttpStatus.CONFLICT);
 		}
 	}
 
@@ -53,6 +66,19 @@ public class CartServiceImpl implements CartService {
 			return DeleteCartResponse.builder().status("success").build();
 		} catch (Exception e) {
 			throw new CustomException("Cart Items Not Found", HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@Override
+	public ResponseEntity<List<CartItem>> findAll(Long id) {
+		try {
+			var user = userRepository.findById(id).orElseThrow();
+			Cart cart = cartRepository.findByUser(id);
+			var carItems = cartItemRepository.findAllByCartId(cart.getId());
+			return ResponseEntity.ok(carItems);
+
+		} catch (Exception e) {
+			throw new CustomException(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}
 

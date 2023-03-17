@@ -6,10 +6,8 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import app.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +22,7 @@ public class SecurityConfig {
 	
 	@Bean
 	  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-	    http
+	    http.cors().and()
 	        .csrf()
 	        .disable()
 	        .authorizeHttpRequests()
@@ -40,5 +38,7 @@ public class SecurityConfig {
 	        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 	    return http.build();
 	  }
+	
+
 }
 

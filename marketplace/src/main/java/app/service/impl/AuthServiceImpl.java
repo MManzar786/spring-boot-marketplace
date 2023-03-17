@@ -39,7 +39,7 @@ public class AuthServiceImpl implements AuthService {
 			String jwtToken = jwtService.generateToken(user);
 			User savedUser = userRepository.save(user);
 
-			return RegisterResponse.builder().token(jwtToken).user(savedUser).build();
+			return RegisterResponse.builder().token(jwtToken).status(true).build();
 		} else {
 			throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
 		}
@@ -51,8 +51,8 @@ public class AuthServiceImpl implements AuthService {
 					.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 			var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
 			String jwtToken = jwtService.generateToken(user);
-			return AuthenticationResponse.builder().token(jwtToken).email(user.getEmail())
-					.firstname(user.getFirstName()).lastname(user.getLastName()).build();
+			return AuthenticationResponse.builder().role(user.getRole()).token(jwtToken).email(user.getEmail())
+					.firstname(user.getFirstName()).lastname(user.getLastName()).id(user.getId()).build();
 		} catch (AuthenticationException e) {
 			throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
 		}
