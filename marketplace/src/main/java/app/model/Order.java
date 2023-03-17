@@ -20,10 +20,9 @@ public class Order {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    private String status;
 
-    @Column(name = "total_amount")
-    private BigDecimal totalAmount;
+    @Column(name = "status")
+    private String status;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
