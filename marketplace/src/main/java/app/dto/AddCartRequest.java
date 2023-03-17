@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterResponse {
+public class AddCartRequest {
+	private Long productId;
+	private Long userId;
+	private int quantity;
 
-		  private String token;
-		  private Boolean status;
-	  
-	}
+}

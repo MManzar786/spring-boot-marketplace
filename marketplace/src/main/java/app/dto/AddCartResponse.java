@@ -1,6 +1,6 @@
-package app.common.utils;
+package app.dto;
 
-import app.dto.AuthenticationResponse;
+import app.model.CartItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +10,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseModel {
-
-		  private int statusCode;
-		  private String message;
-	  
+public class AddCartResponse {
+	private CartItem cartItem;
 }

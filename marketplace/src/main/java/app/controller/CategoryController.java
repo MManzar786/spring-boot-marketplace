@@ -18,8 +18,7 @@ public class CategoryController {
 
 	private final CategoryService categoryService ;
 	 @GetMapping()
-	  public ResponseEntity<?> getAll(
-	  ) {
+	  public ResponseEntity<?> getAll() {
 		  try {
 			  return ResponseEntity.ok(categoryService.findAll());			  
 		  }catch(CustomException ex) {

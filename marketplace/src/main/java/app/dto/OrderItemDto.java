@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterResponse {
+public class OrderItemDto {
+	private Long productId;
+	private Integer quantity;
 
-		  private String token;
-		  private Boolean status;
-	  
-	}
+}

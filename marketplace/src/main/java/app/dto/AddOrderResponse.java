@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterResponse {
+public class AddOrderResponse {
+    private Boolean success;
 
-		  private String token;
-		  private Boolean status;
-	  
-	}
+}

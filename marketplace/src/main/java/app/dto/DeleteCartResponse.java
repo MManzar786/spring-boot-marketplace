@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterResponse {
-
-		  private String token;
-		  private Boolean status;
-	  
-	}
+public class DeleteCartResponse {
+	String status;
+}
