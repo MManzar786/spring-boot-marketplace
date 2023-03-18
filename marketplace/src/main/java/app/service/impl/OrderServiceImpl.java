@@ -1,12 +1,9 @@
 package app.service.impl;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import app.common.exception.CustomException;
@@ -14,6 +11,7 @@ import app.common.utils.Constants;
 import app.dto.AddOrderRequest;
 import app.dto.AddOrderResponse;
 import app.dto.OrderItemDto;
+import app.dto.OrderResponse;
 import app.model.Order;
 import app.model.OrderItem;
 import app.model.Product;
@@ -33,8 +31,13 @@ public class OrderServiceImpl implements OrderService{
 	private final UserRepository userRepository;
 	private final ProductRepository productRepository;
 	@Override
-	public List<OrderItem> findAll() {
-		return orderItemRepository.findAll();
+	public OrderResponse findAllOrders() {
+		try {
+		List<Order> orderItems= orderRepository.findAll();
+		return OrderResponse.builder().orders(orderItems).build();
+		}catch(Exception e) {
+			throw new CustomException(e.getMessage(), HttpStatus.CONFLICT);
+		}
 	}
 	@Override
 	public AddOrderResponse addOrders(AddOrderRequest orderDto) {

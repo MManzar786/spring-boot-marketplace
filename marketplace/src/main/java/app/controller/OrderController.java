@@ -1,6 +1,7 @@
 package app.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,10 +21,11 @@ import lombok.RequiredArgsConstructor;
 public class OrderController {
 	private final OrderService orderService;
 
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@GetMapping()
 	public ResponseEntity<?> getAll() {
 		try {
-			return ResponseEntity.ok(orderService.findAll());
+			return ResponseEntity.ok(orderService.findAllOrders());
 		} catch (CustomException ex) {
 			return ResponseEntity.status(ex.getHttpStatus().value()).body(ex.getMessage());
 		}

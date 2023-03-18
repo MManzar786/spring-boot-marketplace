@@ -2,7 +2,6 @@ package app.service.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,8 +10,6 @@ import java.nio.file.StandardCopyOption;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,8 +20,6 @@ import app.model.Category;
 import app.model.Product;
 import app.repository.CategoryRepository;
 import app.repository.ProductRepository;
-import app.repository.UserRepository;
-import app.security.JwtService;
 import app.service.ProductService;
 import lombok.RequiredArgsConstructor;
 

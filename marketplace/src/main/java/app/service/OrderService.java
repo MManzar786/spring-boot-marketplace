@@ -1,15 +1,14 @@
 package app.service;
 
-import java.util.List;
-
 import app.dto.AddOrderRequest;
 import app.dto.AddOrderResponse;
-import app.model.OrderItem;
+import app.dto.OrderResponse;
 
 public interface OrderService {
 
-	List<OrderItem> findAll();
+	OrderResponse findAllOrders();
 
 	AddOrderResponse addOrders(AddOrderRequest orderDto);
+
 
 }
