@@ -1,9 +1,7 @@
 package app.controller;
 
 import java.io.File;
-import java.math.BigDecimal;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
