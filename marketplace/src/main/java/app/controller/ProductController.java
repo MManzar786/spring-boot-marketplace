@@ -54,6 +54,7 @@ public class ProductController {
 			@RequestParam("description") String description, @RequestParam("category") String category,
 			@RequestParam("price") double price, @RequestParam("image") MultipartFile image) {
 		String uploadDir = new File("uploads").getAbsolutePath();
+		System.out.println("Upload path"+uploadDir);
 
 		try {
 			return this.productService.addProduct(title, description, category, price, image, uploadDir);

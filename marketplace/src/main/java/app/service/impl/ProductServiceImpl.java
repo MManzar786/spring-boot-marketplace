@@ -49,6 +49,7 @@ public class ProductServiceImpl implements ProductService {
 			MultipartFile image, String uploadDir) {
 		String filename = StringUtils.cleanPath(image.getOriginalFilename());
 		Path uploadPath = Paths.get(uploadDir);
+		System.out.println("Uplaod Path::"+uploadPath);
 
 		if (!Files.exists(uploadPath)) {
 			try {
@@ -60,12 +61,14 @@ public class ProductServiceImpl implements ProductService {
 
 		try (InputStream inputStream = image.getInputStream()) {
 			Path filePath = uploadPath.resolve(filename);
+			System.out.println("Files Path::"+filePath);
 			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path("/images/").path(filename)
 				.toUriString();
+		System.out.println("Servlet Path::"+ ServletUriComponentsBuilder.fromCurrentContextPath());
 		Category category = this.categoryRepository.findByName(categoryTitle);
 		Product product = new Product();
 		product.setName(title);
