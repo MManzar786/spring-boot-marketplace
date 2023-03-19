@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import app.common.exception.CustomException;
+import app.common.utils.Constants;
 import app.dto.AuthenticationRequest;
 import app.dto.AuthenticationResponse;
 import app.dto.RegisterRequest;
@@ -37,11 +38,11 @@ public class AuthServiceImpl implements AuthService {
 			user.setPassword(passwordEncoder.encode(appUser.getPassword()));
 			user.setRole(ERole.ROLE_USER);
 			String jwtToken = jwtService.generateToken(user);
-			User savedUser = userRepository.save(user);
+			userRepository.save(user);
 
 			return RegisterResponse.builder().token(jwtToken).status(true).build();
 		} else {
-			throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
+			throw new CustomException(Constants.ALREADY_EMAIL_MESSAGE, HttpStatus.CONFLICT);
 		}
 	}
 
@@ -54,7 +55,7 @@ public class AuthServiceImpl implements AuthService {
 			return AuthenticationResponse.builder().role(user.getRole()).token(jwtToken).email(user.getEmail())
 					.firstname(user.getFirstName()).lastname(user.getLastName()).id(user.getId()).build();
 		} catch (AuthenticationException e) {
-			throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
+			throw new CustomException(Constants.INAVLID_EMAIL_MESSAGE, HttpStatus.CONFLICT);
 		}
 	}
 

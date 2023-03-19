@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import app.common.exception.CustomException;
+import app.common.utils.Constants;
 import app.dto.AddCartRequest;
 import app.dto.AddCartResponse;
 import app.dto.AuthenticationResponse;
@@ -65,7 +66,7 @@ public class CartServiceImpl implements CartService {
 			cartItemRepository.deleteById(cartId);
 			return DeleteCartResponse.builder().status("success").build();
 		} catch (Exception e) {
-			throw new CustomException("Cart Items Not Found", HttpStatus.NOT_FOUND);
+			throw new CustomException(Constants.CART_ITENS_NOT_FOUND_MESSAGE, HttpStatus.NOT_FOUND);
 		}
 	}
 

@@ -25,68 +25,63 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
 	private final ProductRepository productRepository;
 	private final CategoryRepository categoryRepository;
-	
 
 	@Override
 	public ResponseEntity<PaginatedResponse<Product>> findAll(Pageable pageable) {
 		Page<Product> products = productRepository.findAll(pageable);
-	    long totalProducts = products.getTotalElements();
-	    return ResponseEntity.ok(PaginatedResponse.of(products.getContent(), totalProducts, pageable));
+		long totalProducts = products.getTotalElements();
+		return ResponseEntity.ok(PaginatedResponse.of(products.getContent(), totalProducts, pageable));
 	}
-	
+
 	@Override
-	public ResponseEntity<PaginatedResponse<Product>> findAll(String title,Pageable pageable) {
-		Page<Product> products = productRepository.findByTitle(title,pageable);
-	    long totalProducts = products.getTotalElements();
-	    return ResponseEntity.ok(PaginatedResponse.of(products.getContent(), totalProducts, pageable));
+	public ResponseEntity<PaginatedResponse<Product>> findAll(String title, Pageable pageable) {
+		Page<Product> products = productRepository.findByTitle(title, pageable);
+		long totalProducts = products.getTotalElements();
+		return ResponseEntity.ok(PaginatedResponse.of(products.getContent(), totalProducts, pageable));
 	}
 
 	@Override
 	public ResponseEntity<Product> addProduct(String title, String description, String categoryTitle, double price,
-			MultipartFile image,String uploadDir) {
-		 String filename = StringUtils.cleanPath(image.getOriginalFilename());
-	        Path uploadPath = Paths.get(uploadDir);
+			MultipartFile image, String uploadDir) {
+		String filename = StringUtils.cleanPath(image.getOriginalFilename());
+		Path uploadPath = Paths.get(uploadDir);
 
-	        if (!Files.exists(uploadPath)) {
-	            try {
-					Files.createDirectories(uploadPath);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	        }
-
-	        try (InputStream inputStream = image.getInputStream()) {
-	            Path filePath = uploadPath.resolve(filename);
-	            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-	        } catch (IOException e) {
-				// TODO Auto-generated catch block
+		if (!Files.exists(uploadPath)) {
+			try {
+				Files.createDirectories(uploadPath);
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-	        String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-	                .path("/images/")
-	                .path(filename)
-	                .toUriString();
-		    Category category = this.categoryRepository.findByName(categoryTitle);
-	        Product product = new Product();
-	        product.setName(title);
-	        product.setDescription(description);
-	        product.setCategory(category);
-	        product.setPrice(price);
-	        product.setImageUrl(imageUrl);
-	        Product savedProduct = productRepository.save(product);
-	        return ResponseEntity.ok(savedProduct);
+		}
+
+		try (InputStream inputStream = image.getInputStream()) {
+			Path filePath = uploadPath.resolve(filename);
+			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path("/images/").path(filename)
+				.toUriString();
+		Category category = this.categoryRepository.findByName(categoryTitle);
+		Product product = new Product();
+		product.setName(title);
+		product.setDescription(description);
+		product.setCategory(category);
+		product.setPrice(price);
+		product.setImageUrl(imageUrl);
+		Product savedProduct = productRepository.save(product);
+		return ResponseEntity.ok(savedProduct);
 	}
 
 	@Override
 	public ResponseEntity<PaginatedResponse<Product>> findProductsByCategory(Long categoryId, Pageable pageable) {
-			Page<Product> products = productRepository.findByCategory(categoryId,pageable);
-		    long totalProducts = products.getTotalElements();
-		    return ResponseEntity.ok(PaginatedResponse.of(products.getContent(), totalProducts, pageable));
-		}
+		Page<Product> products = productRepository.findByCategory(categoryId, pageable);
+		long totalProducts = products.getTotalElements();
+		return ResponseEntity.ok(PaginatedResponse.of(products.getContent(), totalProducts, pageable));
+	}
 
 }
