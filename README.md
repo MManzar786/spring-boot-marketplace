@@ -1,5 +1,4 @@
 # Java and Angular Based Ecommerce Project Readme (Backend)
-This is an ecommerce project that allows users to browse products,search products,filter by  add them to their cart, and place orders..
 
 ## Table of Contents
 1.  <a href="#l1">Introduction</a>
