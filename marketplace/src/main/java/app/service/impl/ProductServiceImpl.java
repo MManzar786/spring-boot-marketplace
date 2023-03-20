@@ -66,8 +66,11 @@ public class ProductServiceImpl implements ProductService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path("/images/").path(filename)
-				.toUriString();
+		  String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+		            .path("/uploads/")
+		            .path(filename)
+		            .toUriString();
+
 		System.out.println("Servlet Path::"+ ServletUriComponentsBuilder.fromCurrentContextPath());
 		Category category = this.categoryRepository.findByName(categoryTitle);
 		Product product = new Product();
